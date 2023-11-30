@@ -1,0 +1,295 @@
+openapi: 3.0.3
+info:
+  title: CooperativePixelArt gateway 
+  description: |-
+    This is the API of the PixelArtUser gateway
+  # termsOfService: http://swagger.io/terms/
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  version: 0.1.0
+# externalDocs:
+#  description: Find out more about Swagger
+#  url: http://swagger.io
+servers:
+  - url: https://localhost:9000/api
+tags:
+  - name: pixel-grid
+    description: Operations about the pixel grids
+  - name: brush
+    description: Operations about brushes
+    # externalDocs:
+    #  description: Find out more
+    #  url: http://swagger.io
+paths:
+  /pixel-grids:
+    get:
+      tags:
+        - "pixel-grid"
+      summary: Get the current pixel-grids (ids)
+      description: ''
+      operationId: getCurrentPixelGrids
+      responses:
+        default:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
+  /pixel-grids/{gridIds}:
+    get:
+      tags:
+        - pixel-grid
+      summary: Get the current state of the pixel grid
+      description: ''
+      operationId: getPixelGridState
+      parameters:
+      - name: gridIds
+        in: path
+        description: The pixel-grid id
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: successful operation
+          content: 
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PixelGrid'
+        '500':
+          description: Service internal error
+
+  /pixel-grids/{gridIds}/brushes:
+    post:
+      tags:
+        - brush
+      summary: Create a new brush to paint the grid given grid
+      description: Create a new brush to paint the grid
+      operationId: createNewBrush
+      parameters:
+      - name: gridIds
+        in: path
+        description: The pixel-grid id
+        required: true
+        schema:
+          type: string
+      responses:
+        default:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - brushId
+                properties:
+                  brushId:
+                    type: string
+    get:
+      tags:
+        - brush
+      summary: Get the current brushes (ids) in the selected grid (gridIds)
+      description: ''
+      operationId: getCurrentBrushes
+      parameters:
+      - name: gridIds
+        in: path
+        description: The pixel-grid id
+        required: true
+        schema:
+          type: string
+      responses:
+        default:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
+  /pixel-grids/{gridIds}/brushes/{brushId}:
+    get:
+      tags:
+        - brush
+      summary: Get the current state of a brush
+      description: ''
+      operationId: getBrushInfo
+      parameters:
+        - name: gridIds
+          in: path
+          description: The pixel-grid id
+          required: true
+          schema:
+            type: string
+        - name: brushId
+          in: path
+          description: The brush id
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: a brush to be returned
+          content: 
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Brush'
+        '400':
+          description: invalid parameter supplied
+        '500':
+          description: service internal error
+    delete:
+      tags:
+        - brush
+      summary: Remove the specified brush
+      description: ''
+      operationId: destroyBrush
+      parameters:
+        - name: gridIds
+          in: path
+          description: The pixel-grid id
+          required: true
+          schema:
+            type: string
+        - name: brushId
+          in: path
+          description: The brush id
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: successful operation
+        '400':
+          description: invalid parameter supplied
+        '500':
+          description: service internal error
+  /pixel-grids/{gridIds}/brushes/{brushId}/move-to:
+    post:
+      tags:
+        - brush
+      summary: Move the specified brush to a new position on the pixel grid
+      description: ''
+      operationId: moveBrushTo
+      parameters:
+        - name: gridIds
+          in: path
+          description: The pixel-grid id
+          required: true
+          schema:
+            type: string
+        - name: brushId
+          in: path
+          description: The brush id
+          required: true
+          schema:
+            type: string
+      requestBody:
+        description: The destination point
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Point'
+      responses:
+        '200':
+          description: successful operation
+        '400':
+          description: invalid parameter supplied
+        '500':
+          description: service internal error
+  /pixel-grids/{gridIds}/brushes/{brushId}/select-pixel:
+    post:
+      tags:
+        - brush
+      summary: Select (paint) the pixel where the specified brush is
+      description: ''
+      operationId: selectPixel
+      parameters:
+        - name: brushId
+          in: path
+          description: The brush id
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: successful operation
+        '400':
+          description: invalid parameter supplied
+        '500':
+          description: service internal error
+  /pixel-grids/{gridIds}/brushes/{brushId}/change-color:
+    post:
+      tags:
+        - brush
+      summary: Change the color of the specified brush
+      description: ''
+      operationId: changeBrushColor
+      parameters:
+        - name: brushId
+          in: path
+          description: The brush id
+          required: true
+          schema:
+            type: string
+        - name: color
+          in: query
+          description: The new brush color
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: successful operation
+        '400':
+          description: invalid parameter supplied
+        '500':
+          description: service internal error
+components:
+  schemas:
+    Point:
+      type: object
+      required:
+      - x
+      - y
+      properties:
+        x:
+          type: integer
+        y:
+          type: integer
+    Brush:
+      type: object
+      required:
+      - brushId
+      - x
+      - y
+      - color
+      properties:
+        brushId:
+          type: string
+        x:
+          type: integer
+        y:
+          type: integer
+        color:
+          type: integer
+    PixelGrid:
+      type: object
+      required:
+      - numColumns
+      - numRows
+      - pixels
+      properties:
+        numColumns:
+          type: integer
+        numRows:
+          type: integer
+        pixel:
+          type: array
+          items:
+            type: integer
+
