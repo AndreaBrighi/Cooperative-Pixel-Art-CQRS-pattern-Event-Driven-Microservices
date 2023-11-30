@@ -10,6 +10,7 @@ async function bootstrap() {
   });
   const envServerSchema = envSchema.parse(process.env);
   const app = await NestFactory.create(AppModule);
+  app.setGlobalPrefix('api');
   await app.listen(envServerSchema.PORT, envServerSchema.HOSTNAME);
   app.getUrl().then((url) => {
     Logger.log('Server listening: ' + url, 'Server');
