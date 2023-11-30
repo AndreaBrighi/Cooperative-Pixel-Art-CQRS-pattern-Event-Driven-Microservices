@@ -1,6 +1,6 @@
 openapi: 3.0.3
 info:
-  title: CooperativePixelArt gateway 
+  title: CooperativePixelArt gateway API
   description: |-
     This is the API of the PixelArtUser gateway
   # termsOfService: http://swagger.io/terms/
