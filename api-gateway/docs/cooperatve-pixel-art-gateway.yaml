@@ -16,8 +16,6 @@ servers:
 tags:
   - name: pixel-grid
     description: Operations about the pixel grids
-  - name: brush
-    description: Operations about brushes
     # externalDocs:
     #  description: Find out more
     #  url: http://swagger.io
@@ -55,68 +53,20 @@ paths:
       responses:
         '200':
           description: successful operation
-          content: 
+          content:
             application/json:
               schema:
                 $ref: '#/components/schemas/PixelGrid'
         '500':
           description: Service internal error
 
-  /pixel-grids/{gridIds}/brushes:
+  /pixel-grids/{gridIds}/color-pixel/{color}:
     post:
       tags:
-        - brush
-      summary: Create a new brush to paint the grid given grid
-      description: Create a new brush to paint the grid
-      operationId: createNewBrush
-      parameters:
-      - name: gridIds
-        in: path
-        description: The pixel-grid id
-        required: true
-        schema:
-          type: string
-      responses:
-        default:
-          description: successful operation
-          content:
-            application/json:
-              schema:
-                type: object
-                required:
-                - brushId
-                properties:
-                  brushId:
-                    type: string
-    get:
-      tags:
-        - brush
-      summary: Get the current brushes (ids) in the selected grid (gridIds)
+        - pixel-grid
+      summary: Select (paint) the pixel selcted
       description: ''
-      operationId: getCurrentBrushes
-      parameters:
-      - name: gridIds
-        in: path
-        description: The pixel-grid id
-        required: true
-        schema:
-          type: string
-      responses:
-        default:
-          description: successful operation
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  type: string
-  /pixel-grids/{gridIds}/brushes/{brushId}:
-    get:
-      tags:
-        - brush
-      summary: Get the current state of a brush
-      description: ''
-      operationId: getBrushInfo
+      operationId: selectPixel
       parameters:
         - name: gridIds
           in: path
@@ -124,69 +74,12 @@ paths:
           required: true
           schema:
             type: string
-        - name: brushId
+        - name: color
           in: path
-          description: The brush id
+          description: The color to paint the pixel
           required: true
           schema:
-            type: string
-      responses:
-        '200':
-          description: a brush to be returned
-          content: 
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Brush'
-        '400':
-          description: invalid parameter supplied
-        '500':
-          description: service internal error
-    delete:
-      tags:
-        - brush
-      summary: Remove the specified brush
-      description: ''
-      operationId: destroyBrush
-      parameters:
-        - name: gridIds
-          in: path
-          description: The pixel-grid id
-          required: true
-          schema:
-            type: string
-        - name: brushId
-          in: path
-          description: The brush id
-          required: true
-          schema:
-            type: string
-      responses:
-        '200':
-          description: successful operation
-        '400':
-          description: invalid parameter supplied
-        '500':
-          description: service internal error
-  /pixel-grids/{gridIds}/brushes/{brushId}/move-to:
-    post:
-      tags:
-        - brush
-      summary: Move the specified brush to a new position on the pixel grid
-      description: ''
-      operationId: moveBrushTo
-      parameters:
-        - name: gridIds
-          in: path
-          description: The pixel-grid id
-          required: true
-          schema:
-            type: string
-        - name: brushId
-          in: path
-          description: The brush id
-          required: true
-          schema:
-            type: string
+            type: integer
       requestBody:
         description: The destination point
         required: true
@@ -194,54 +87,6 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/Point'
-      responses:
-        '200':
-          description: successful operation
-        '400':
-          description: invalid parameter supplied
-        '500':
-          description: service internal error
-  /pixel-grids/{gridIds}/brushes/{brushId}/select-pixel:
-    post:
-      tags:
-        - brush
-      summary: Select (paint) the pixel where the specified brush is
-      description: ''
-      operationId: selectPixel
-      parameters:
-        - name: brushId
-          in: path
-          description: The brush id
-          required: true
-          schema:
-            type: string
-      responses:
-        '200':
-          description: successful operation
-        '400':
-          description: invalid parameter supplied
-        '500':
-          description: service internal error
-  /pixel-grids/{gridIds}/brushes/{brushId}/change-color:
-    post:
-      tags:
-        - brush
-      summary: Change the color of the specified brush
-      description: ''
-      operationId: changeBrushColor
-      parameters:
-        - name: brushId
-          in: path
-          description: The brush id
-          required: true
-          schema:
-            type: string
-        - name: color
-          in: query
-          description: The new brush color
-          required: true
-          schema:
-            type: integer
       responses:
         '200':
           description: successful operation
@@ -260,22 +105,6 @@ components:
         x:
           type: integer
         y:
-          type: integer
-    Brush:
-      type: object
-      required:
-      - brushId
-      - x
-      - y
-      - color
-      properties:
-        brushId:
-          type: string
-        x:
-          type: integer
-        y:
-          type: integer
-        color:
           type: integer
     PixelGrid:
       type: object
