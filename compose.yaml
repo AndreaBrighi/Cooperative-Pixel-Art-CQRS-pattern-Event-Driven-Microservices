@@ -7,6 +7,9 @@ services:
       - PORT=9000
     ports:
       - 9000:9000
+    depends_on:
+      kafka:
+        condition: service_healthy
   rabbitmq:
     image: rabbitmq:latest
     ports:
@@ -32,3 +35,9 @@ services:
       KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
       KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+    healthcheck:
+      test: nc -z localhost 9092 || exit -1
+      start_period: 15s
+      interval: 5s
+      timeout: 10s
+      retries: 10
