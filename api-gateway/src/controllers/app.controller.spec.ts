@@ -1,7 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { PixelGridController } from './app.controller';
-import { PixelGridService } from './app.service';
-import { PointDto } from './dto/PointDTO';
+import { PixelGridService } from '../../app.service';
+import { PointDto } from './dto/PointDto';
 
 describe('AppController', () => {
   let appController: PixelGridController;

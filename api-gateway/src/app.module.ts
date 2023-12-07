@@ -1,27 +1,11 @@
 import { Module } from '@nestjs/common';
-import { ClientsModule, Transport } from '@nestjs/microservices';
-import { PixelGridController } from './app.controller';
-import { PixelGridService } from './app.service';
+import { PixelGridController } from './controllers/app.controller';
+import { PixelGridsUseCasesModule } from 'src/usecases/pixel-grids-usecases.module';
+import { PixelGridsServicesModule } from './services/pixel-grids.service';
 
 @Module({
-  imports: [
-    ClientsModule.register([
-      {
-        name: 'GRIDS_SERVICE',
-        transport: Transport.KAFKA,
-        options: {
-          client: {
-            clientId: 'app-gateway',
-            brokers: ['kafka:9092'],
-          },
-          consumer: {
-            groupId: 'kafka-microservices',
-          },
-        },
-      },
-    ]),
-  ],
+  imports: [PixelGridsUseCasesModule, PixelGridsServicesModule],
   controllers: [PixelGridController],
-  providers: [PixelGridService],
+  providers: [],
 })
 export class AppModule {}
