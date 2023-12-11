@@ -17,13 +17,22 @@ services:
     ports:
       - 9001:9001
     depends_on:
-      - gateway
-      - rabbitmq
+      gateway:
+        condition: service_started
+      rabbitmq:
+         condition: service_healthy
+  #    kafka:
+  #      condition: service_healthy
   rabbitmq:
     image: rabbitmq:3-management
     ports:
       - 5672:5672
       - 15672:15672
+    healthcheck:
+      test: rabbitmq-diagnostics -q ping
+      interval: 30s
+      timeout: 30s
+      retries: 3
   # zookeeper:
   #   image: confluentinc/cp-zookeeper:latest
   #   environment:
