@@ -3,7 +3,7 @@ import { PixelGridsUseCases } from '../usecases/pixel-grids.usecases';
 import { PointDto } from './dto/PointDto';
 
 @Controller('pixel-grids')
-export class PixelGridController {
+export class GatewayController {
   constructor(private readonly pixelGridsUseCase: PixelGridsUseCases) {}
 
   @Get()

@@ -1,18 +1,18 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { PixelGridController } from './app.controller';
-import { PixelGridService } from '../../app.service';
+import { GatewayController } from './app.controller';
 import { PointDto } from './dto/PointDto';
+import { PixelGridsUseCases } from 'src/usecases/pixel-grids.usecases';
 
 describe('AppController', () => {
-  let appController: PixelGridController;
+  let appController: GatewayController;
 
   beforeEach(async () => {
     const app: TestingModule = await Test.createTestingModule({
-      controllers: [PixelGridController],
-      providers: [PixelGridService],
+      controllers: [GatewayController],
+      providers: [PixelGridsUseCases],
     }).compile();
 
-    appController = app.get<PixelGridController>(PixelGridController);
+    appController = app.get<GatewayController>(GatewayController);
   });
 
   describe('root', () => {
