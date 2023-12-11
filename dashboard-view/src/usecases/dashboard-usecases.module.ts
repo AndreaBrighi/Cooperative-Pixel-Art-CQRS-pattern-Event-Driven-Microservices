@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
-import { DashboardUseCases } from './pixel-grids.usecases';
-import { DashboardViewServicesModule } from 'src/services/pixel-grids.service';
+import { DashboardUseCases } from './dashboard.usecases';
+import { DashboardViewServicesModule } from 'src/services/dashboard.service';
 
 @Module({
   imports: [DashboardViewServicesModule],

@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { pixelGrid } from 'src/core/pixel-grid';
-import { DashboardRepository } from 'src/core/pixel-grids-repository';
+import { DashboardRepository } from 'src/core/dashboard-repository';
 
 @Injectable()
 export class DashboardUseCases {

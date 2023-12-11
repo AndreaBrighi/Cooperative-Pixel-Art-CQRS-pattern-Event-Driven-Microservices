@@ -1,6 +1,6 @@
 import { Controller, Logger } from '@nestjs/common';
 import { MessagePattern, Payload } from '@nestjs/microservices';
-import { DashboardUseCases } from 'src/usecases/pixel-grids.usecases';
+import { DashboardUseCases } from 'src/usecases/dashboard.usecases';
 
 @Controller()
 export class DashboardViewController {

@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { DashboardRepository } from 'src/core/pixel-grids-repository';
+import { DashboardRepository } from 'src/core/dashboard-repository';
 import { connect, Connection } from 'amqplib/callback_api';
 import { ColorPixelEvent } from 'src/core/ColorPixelEvent';
 
