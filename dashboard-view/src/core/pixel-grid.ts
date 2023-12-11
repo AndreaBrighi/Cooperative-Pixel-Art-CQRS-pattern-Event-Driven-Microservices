@@ -1,6 +1,6 @@
 import { Subject } from 'rxjs';
-import { ColorPixelEvent } from './ColorPixelEvent';
 import { Point } from './Point';
+import { ColorPixelEvent } from './ColorPixelEvent';
 
 export class pixelGrid {
   width: number;

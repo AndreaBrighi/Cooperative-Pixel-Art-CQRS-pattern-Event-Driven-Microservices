@@ -10,7 +10,7 @@ import { ClientsModule, Transport } from '@nestjs/microservices';
         name: 'DASHBOARD_SERVICE',
         transport: Transport.TCP,
         options: {
-          host: 'localhost',
+          host: 'dashboard',
           port: 9001,
         },
       },
