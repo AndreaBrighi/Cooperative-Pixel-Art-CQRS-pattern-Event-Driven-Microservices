@@ -10,7 +10,7 @@ export class PixelGridsService implements PixelGridsRepository {
   getGridState(gridId: string): Promise<any> {
     return new Promise((resolve, reject) => {
       this.client
-        .send<string, string>('sum', gridId)
+        .send<string, string>('get_grid', gridId)
         .pipe(catchError(async (val) => reject(val)))
         .subscribe((value) => resolve(value));
     });

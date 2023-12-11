@@ -6,8 +6,8 @@ import { DashboardUseCases } from 'src/usecases/pixel-grids.usecases';
 export class DashboardViewController {
   constructor(private readonly dashboardService: DashboardUseCases) {}
 
-  @MessagePattern('sum')
-  accumulate(@Payload() gridId: any): string {
+  @MessagePattern('get_grid')
+  accumulate(@Payload() gridId: string): string {
     Logger.log(gridId, 'Dashboard');
     this.dashboardService.updateGrid(gridId);
     return gridId;
