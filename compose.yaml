@@ -75,3 +75,14 @@ services:
       interval: 5s
       timeout: 10s
       retries: 10
+
+  kafdrop:
+    image: obsidiandynamics/kafdrop
+    restart: "no"
+    ports:
+      - "8000:9000"
+    environment:
+      KAFKA_BROKERCONNECT: "kafka:9092"
+    depends_on:
+      kafka:
+        condition: service_healthy
