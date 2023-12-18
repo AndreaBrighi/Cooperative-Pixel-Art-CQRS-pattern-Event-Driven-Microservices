@@ -1,15 +1,15 @@
 import { Controller, Logger } from '@nestjs/common';
-import { MessagePattern, Payload } from '@nestjs/microservices';
+import { EventPattern, MessagePattern } from '@nestjs/microservices';
 import { PixelGridUseCases } from 'src/usecases/pixel-grids.usecases';
+import { eventDTO } from './dto/EventDto';
 
 @Controller()
 export class PixelGridController {
-  constructor(private readonly dashboardService: PixelGridUseCases) {}
+  constructor(private readonly pixelGridService: PixelGridUseCases) {}
 
-  @MessagePattern('get_grid')
-  accumulate(@Payload() gridId: string): string {
-    Logger.log(gridId, 'Dashboard');
-    this.dashboardService.updateGrid(gridId);
-    return gridId;
+  @MessagePattern('colorate_grid')
+  colorarePizel(event: eventDTO): string {
+    Logger.log(event, 'Colorate');
+    return event.color;
   }
 }

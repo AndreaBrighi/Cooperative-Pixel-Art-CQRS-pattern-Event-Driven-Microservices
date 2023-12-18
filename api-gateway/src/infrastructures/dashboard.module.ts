@@ -15,6 +15,21 @@ import { ClientsModule, Transport } from '@nestjs/microservices';
         },
       },
     ]),
+    ClientsModule.register([
+      {
+        name: 'GRID_SERVICE',
+        transport: Transport.KAFKA,
+        options: {
+          client: {
+            clientId: 'app-gateway',
+            brokers: ['kafka:9092'],
+          },
+          consumer: {
+            groupId: 'kafka-microservices',
+          },
+        },
+      },
+    ]),
   ],
   providers: [
     {

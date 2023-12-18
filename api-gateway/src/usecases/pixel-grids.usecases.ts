@@ -14,4 +14,8 @@ export class PixelGridsUseCases {
   getGridState(gridId: string): Promise<any> {
     return this.repository.getGridState(gridId);
   }
+
+  colorateGrid(gridId: string): Promise<any> {
+    return this.repository.colorateGrid(gridId);
+  }
 }

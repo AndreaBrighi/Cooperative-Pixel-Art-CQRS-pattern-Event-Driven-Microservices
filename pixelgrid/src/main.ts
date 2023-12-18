@@ -16,7 +16,11 @@ async function bootstrap() {
       transport: Transport.KAFKA,
       options: {
         client: {
+          clientId: 'app-gateway',
           brokers: ['kafka:9092'],
+        },
+        consumer: {
+          groupId: 'kafka-microservices',
         },
       },
     },
