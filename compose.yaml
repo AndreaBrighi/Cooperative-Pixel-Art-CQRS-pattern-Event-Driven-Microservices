@@ -85,7 +85,7 @@ services:
       retries: 10
 
   kafdrop:
-    image: obsidiandynamics/kafdrop
+    image: obsidiandynamics/kafdrop:latest
     restart: "no"
     ports:
       - "8000:9000"
