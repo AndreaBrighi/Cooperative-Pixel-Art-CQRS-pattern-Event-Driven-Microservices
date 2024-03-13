@@ -8,6 +8,8 @@ services:
     depends_on:
       gateway:
         condition: service_started
+      rabbitmq:
+         condition: service_healthy
 
   gateway:
     build: ./api-gateway/

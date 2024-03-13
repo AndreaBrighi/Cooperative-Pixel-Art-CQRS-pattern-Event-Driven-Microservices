@@ -15,8 +15,7 @@ export class AppComponent {
   title = 'gui';
   color: string = '#000000';
 
-  onColorChange(color: string) {
-    this.color = color;
-    console.log(this.color);
+  constructor(){
+
   }
 }
