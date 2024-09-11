@@ -46,10 +46,12 @@ services:
         condition: service_healthy
 
   rabbitmq:
-    image: rabbitmq:3-management
+    build: ./rabbitmq
     ports:
       - 5672:5672
+      - 5673:5673
       - 15672:15672
+      - 15675:15675
     healthcheck:
       test: rabbitmq-diagnostics -q ping
       interval: 30s
