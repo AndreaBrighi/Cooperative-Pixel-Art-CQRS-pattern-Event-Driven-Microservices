@@ -9,13 +9,17 @@ import { CommonModule } from '@angular/common';
   standalone: true,
 })
 export class PixelGridComponent implements OnInit {
+
+  private BLACK: string = '#000000'
+  private WHITE: string = '#FFFFFF'
+
   @Input() width: number = 10;
   @Input() height: number = 10;
-  @Input() selectedColor: string = 'black';
+  @Input() selectedColor: string = this.BLACK;
 
   grid: string[][] = Array.from({ length: this.height }, () =>
-  Array.from({ length: this.width }, () => 'white')
-);
+    Array.from({ length: this.width }, () => this.WHITE)
+  );
 
   constructor() { }
 
@@ -31,7 +35,14 @@ export class PixelGridComponent implements OnInit {
   }
 
   togglePixel(rowIndex: number, colIndex: number) {
-    this.grid[rowIndex][colIndex] = this.grid[rowIndex][colIndex] === 'white' ? this.selectedColor : 'white';
-    }
+    let color = this.selectedColor.toUpperCase()
+    console.log(color)
+    this.grid[rowIndex][colIndex] = this.grid[rowIndex][colIndex] !== color  ? color : this.WHITE;
+  }
+
+  changePixelColor(rowIndex: number, colIndex: number, color: String){
+    let colorUpperCase = color.toUpperCase();
+    this.grid[rowIndex][colIndex] = colorUpperCase;
+  }
 
 }

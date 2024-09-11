@@ -21,5 +21,7 @@ COPY nginx.conf /etc/nginx/nginx.conf
 # directory
 COPY --from=build /app/dist/gui /usr/share/nginx/html
 
+EXPOSE 80
+
 # The above commands build the Angular app and then configure and build a 
 # Docker image for serving it using the nginx web server.
