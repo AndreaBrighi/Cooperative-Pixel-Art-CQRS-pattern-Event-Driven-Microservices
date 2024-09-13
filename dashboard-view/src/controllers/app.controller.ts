@@ -7,7 +7,7 @@ export class DashboardViewController {
   constructor(private readonly dashboardService: DashboardUseCases) {}
 
   @MessagePattern('get_grid')
-  accumulate(@Payload() gridId: string): string {
+  getGrid(@Payload() gridId: string): string {
     Logger.log(gridId, 'Dashboard');
     this.dashboardService.updateGrid(gridId);
     return gridId;
