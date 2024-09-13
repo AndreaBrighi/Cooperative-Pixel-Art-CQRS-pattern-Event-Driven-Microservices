@@ -1,16 +1,23 @@
-import { Injectable } from '@nestjs/common';
-import { pixelGrid } from 'src/core/pixel-grid';
-import { DashboardRepository } from 'src/core/dashboard-repository';
+import { Injectable, Logger } from '@nestjs/common';
+import { PixelGrid } from 'src/core/pixelGrid';
+import { DashboardRepository } from 'src/core/dashboardRepository';
 
 @Injectable()
 export class DashboardUseCases {
-  private dictionary: Record<string, pixelGrid> = {};
+  private whiteGrid = Array.from({ length: 10 }, () => Array.from({ length: 10 }, () => "#FFFFFF"))
+  private dictionary: { [key: string]: PixelGrid } = {};
+
 
   constructor(private repository: DashboardRepository) {
-    for (const grid in Object.keys(this.dictionary)) {
-      this.dictionary[grid].observer().subscribe((event) => {
-        repository.updateGrid(grid, event);
-      });
+
+    this.dictionary["Grid1"] = new PixelGrid(10, 10, this.whiteGrid);
+    Logger.log(this.dictionary)
+    Logger.log(Object.keys(this.dictionary))
+    for (const grid of Object.keys(this.dictionary)) {
+      Logger.log(grid);
+      this.dictionary[grid].observer.subscribe(event =>
+        repository.updateGrid(grid, event)
+      );
     }
   }
 
@@ -18,7 +25,7 @@ export class DashboardUseCases {
     return Object.keys(this.dictionary);
   }
 
-  getPixelGrids(grid: string): pixelGrid {
+  getPixelGrid(grid: string): PixelGrid {
     return this.dictionary[grid];
   }
 

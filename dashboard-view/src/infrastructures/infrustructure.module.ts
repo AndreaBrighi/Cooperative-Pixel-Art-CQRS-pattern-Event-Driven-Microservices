@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
 import { PixelGridsService } from './infrastructure.service';
-import { DashboardRepository } from '../core/dashboard-repository';
+import { DashboardRepository } from '../core/dashboardRepository';
 import { ClientsModule, Transport } from '@nestjs/microservices';
 
 @Module({

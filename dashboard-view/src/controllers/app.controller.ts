@@ -1,15 +1,16 @@
 import { Controller, Logger } from '@nestjs/common';
 import { MessagePattern, Payload } from '@nestjs/microservices';
-import { DashboardUseCases } from 'src/usecases/dashboard.usecases';
+import { PixelGrid } from 'src/core/pixelGrid';
+import { DashboardUseCases } from '../usecases/dashboard.usecases';
+import {PixelGridDto, convertToDto} from './dto/PixelGridDto'
 
 @Controller()
 export class DashboardViewController {
   constructor(private readonly dashboardService: DashboardUseCases) {}
 
   @MessagePattern('get_grid')
-  getGrid(@Payload() gridId: string): string {
+  getGrid(@Payload() gridId: string): PixelGridDto {
     Logger.log(gridId, 'Dashboard');
-    this.dashboardService.updateGrid(gridId);
-    return gridId;
+    return convertToDto(this.dashboardService.getPixelGrid(gridId));
   }
 }

@@ -2,7 +2,7 @@ import { Subject } from 'rxjs';
 import { Point } from './Point';
 import { ColorPixelEvent } from './ColorPixelEvent';
 
-export class pixelGrid {
+export class PixelGrid {
   width: number;
   height: number;
   private _pixels: Array<Array<string>>;
@@ -26,6 +26,6 @@ export class pixelGrid {
   }
 
   get observer() {
-    return this.subject.asObservable;
+    return this.subject.asObservable();
   }
 }
