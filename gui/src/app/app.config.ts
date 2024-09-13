@@ -6,6 +6,7 @@ import { routes } from './app.routes';
 
 import { MqttModule, IMqttServiceOptions } from "ngx-mqtt";
 import { FormsModule } from '@angular/forms';
+import { HttpClientModule } from '@angular/common/http';
 export const MQTT_SERVICE_OPTIONS: IMqttServiceOptions = {
   hostname: environment.mqtt.hostname,
   port: environment.mqtt.port,
@@ -17,6 +18,7 @@ export const appConfig: ApplicationConfig = {
   providers: [
     provideRouter(routes),
     FormsModule,
+    HttpClientModule,
     importProvidersFrom(MqttModule.forRoot(MQTT_SERVICE_OPTIONS))
   ]
 };

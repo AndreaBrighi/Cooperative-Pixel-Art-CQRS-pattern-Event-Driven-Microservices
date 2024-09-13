@@ -37,7 +37,8 @@ export class PixelGridComponent implements OnInit {
   togglePixel(rowIndex: number, colIndex: number) {
     let color = this.selectedColor.toUpperCase()
     console.log(color)
-    this.grid[rowIndex][colIndex] = this.grid[rowIndex][colIndex] !== color  ? color : this.WHITE;
+    let newColor = this.grid[rowIndex][colIndex] !== color  ? color : this.WHITE;
+    this.grid[rowIndex][colIndex] = newColor;
   }
 
   changePixelColor(rowIndex: number, colIndex: number, color: String){
