@@ -1,7 +1,7 @@
 import { Body, Controller, Get, Logger, Param, Post } from '@nestjs/common';
 import { PixelGridsUseCases } from '../usecases/pixel-grids.usecases';
-import { PointDto } from './dto/PointDto';
 import { Admin, Kafka } from 'kafkajs';
+import { PixelDto } from './dto/PixelDto';
 
 @Controller('pixel-grids')
 export class GatewayController {
@@ -51,15 +51,14 @@ export class GatewayController {
     return this.pixelGridsUseCase.getGridState(gridId);
   }
 
-  @Post(':gridId/color-pixel/:color')
+  @Post(':gridId/color-pixel')
   setColorForPixelInGrid(
     @Param('gridId') gridId: string,
-    @Param('color') color: string,
-    @Body() point: PointDto,
+    @Body() pixel: PixelDto,
   ): number {
     Logger.log(gridId);
-    Logger.log(color);
-    Logger.log(point);
+    Logger.log(pixel.color);
+    Logger.log(pixel.point);
     this.pixelGridsUseCase.colorateGrid(gridId);
     return 0;
   }
