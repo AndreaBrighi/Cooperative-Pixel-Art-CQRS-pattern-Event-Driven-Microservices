@@ -9,7 +9,7 @@ async function bootstrap() {
     HOSTNAME: z.string().default('127.0.0.1'),
   });
   const envServerSchema = envSchema.parse(process.env);
-  const app = await NestFactory.create(AppModule);
+  const app = await NestFactory.create(AppModule, { cors: true });
   app.setGlobalPrefix('api');
   await app.listen(envServerSchema.PORT, envServerSchema.HOSTNAME);
   app.getUrl().then((url) => {
