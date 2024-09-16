@@ -1,5 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { PixelGridService } from '../pixel-grid.service';
 
 @Component({
   selector: 'app-pixel-grid',
@@ -13,17 +14,22 @@ export class PixelGridComponent implements OnInit {
   private BLACK: string = '#000000'
   private WHITE: string = '#FFFFFF'
 
-  @Input() width: number = 10;
-  @Input() height: number = 10;
-  @Input() selectedColor: string = this.BLACK;
+  @Input({ required: true })
+  id: string | null = null;
+  @Input({ required: true }) selectedColor: string = this.BLACK;
 
-  grid: string[][] = Array.from({ length: this.height }, () =>
-    Array.from({ length: this.width }, () => this.WHITE)
-  );
+  grid!: string[][];
 
-  constructor() { }
+  constructor(private httpService: PixelGridService ) {
+  }
 
   ngOnInit(): void {
+    console.log(this.id)
+    this.httpService.getGridStatus(this.id!).subscribe(result => {
+      this.grid = result.grid;
+      console.log(result);
+    });
+    
   }
 
   getColor(rowIndex: number, colIndex: number): string {
@@ -37,8 +43,12 @@ export class PixelGridComponent implements OnInit {
   togglePixel(rowIndex: number, colIndex: number) {
     let color = this.selectedColor.toUpperCase()
     console.log(color)
+    console.log(rowIndex);
     let newColor = this.grid[rowIndex][colIndex] !== color  ? color : this.WHITE;
     this.grid[rowIndex][colIndex] = newColor;
+    this.httpService.setPixelColor(this.id!, { x: colIndex, y: rowIndex }, newColor).subscribe(result=>{
+      console.log(result);
+    })
   }
 
   changePixelColor(rowIndex: number, colIndex: number, color: String){

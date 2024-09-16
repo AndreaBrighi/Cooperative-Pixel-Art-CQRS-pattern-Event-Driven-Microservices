@@ -1,22 +1,26 @@
 import { Component } from '@angular/core';
-import { Router, ActivatedRoute, ParamMap } from '@angular/router';
-import { Observable } from 'rxjs';
+import { ActivatedRoute } from '@angular/router';
+import { RouterOutlet } from '@angular/router';
+import { PixelGridComponent } from '../pixel-grid/pixel-grid.component';
+import { ColorPickerModule } from 'ngx-color-picker';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-draw-grid',
   standalone: true,
-  imports: [],
+  imports: [RouterOutlet, PixelGridComponent, ColorPickerModule, FormsModule],
   templateUrl: './draw-grid.component.html',
   styleUrl: './draw-grid.component.css'
 })
 export class DrawGridComponent {
 
-  constructor(
-    private route: ActivatedRoute,
-    private router: Router  ) {}
+  color: string = '#000000';
+  id: string | null = null
+
+  constructor( private route: ActivatedRoute, ) {}
 
   ngOnInit() {
-    const heroId = this.route.snapshot.paramMap.get('id');
-    console.log(heroId);
+    this.id = this.route.snapshot.paramMap.get('gridId');
+    console.log(this.id);
   }
 }

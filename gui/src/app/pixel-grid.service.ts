@@ -4,6 +4,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { PointDto } from './dto/PointDto';
 import { PixelDto } from './dto/PixelDto';
+import { PixelGridDto } from './dto/PixelGridDto';
 
 @Injectable({
   providedIn: 'root'
@@ -14,12 +15,12 @@ export class PixelGridService {
 
   constructor(private http: HttpClient) {}
 
-  getGrids(): Observable<any> {
-    return this.http.get(`${this.apiUrl}/pixel-grids`);
+  getGrids(): Observable<String[]> {
+    return this.http.get<String[]>(`${this.apiUrl}/pixel-grids`);
   }
 
-  getGridStatus(gridId: string): Observable<any> {
-    return this.http.get(`${this.apiUrl}/pixel-grids/${gridId}`);
+  getGridStatus(gridId: string): Observable<PixelGridDto> {
+    return this.http.get<PixelGridDto>(`${this.apiUrl}/pixel-grids/${gridId}`);
   }
 
   setPixelColor(gridId: string, point: PointDto, color: string): Observable<any> {

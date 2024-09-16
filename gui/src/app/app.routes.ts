@@ -4,5 +4,5 @@ import { DrawGridComponent } from './draw-grid/draw-grid.component';
 
 export const routes: Routes = [
     { path: '', component: HomepageComponent },
-    { path: '/draw-grid/:gridId', component: DrawGridComponent },
+    { path: 'draw-grid/:gridId', component: DrawGridComponent },
   ];

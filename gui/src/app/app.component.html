@@ -1,17 +1,1 @@
-<main>
-  <!--<h1>pick a color:</h1>
-  <input [(colorPicker)]="color" [style.background]="color"/>
-  <app-pixel-grid [width]="10" [height]="20" [selectedColor]="color"></app-pixel-grid >-->
-    <table>
-      <tr>
-          <td>Topic: </td>
-          <td><input type="text" [(ngModel)]="topicname" /></td>
-          <td><button type="button" (click)="subscribeNewTopic()">Subscribe Topic</button></td>
-      </tr>
-      <tr>
-          <td>Message: </td>
-          <td><input type="text" [(ngModel)]="msg" /></td>
-          <td><button type="button" (click)="sendmsg()">Send</button></td>
-      </tr>
-  </table>
-</main>
+<router-outlet></router-outlet>

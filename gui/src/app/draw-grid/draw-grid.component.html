@@ -1,1 +1,7 @@
-<p>draw-grid works!</p>
+<main>
+    <h1>{{id}}</h1>
+    <h1>pick a color:</h1>
+    <input [(colorPicker)]=color [style.background]=color/>
+    <app-pixel-grid [id]=id [selectedColor]=color></app-pixel-grid >
+</main>
+

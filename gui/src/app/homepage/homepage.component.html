@@ -1,1 +1,10 @@
 <p>homepage works!</p>
+<div>
+    <ul>
+    @for (item of gridList; track item) {
+        <li><a [routerLink]="['/draw-grid', item]" routerLinkActive="active">{{ item }}</a></li>
+        } @empty {
+        <li>There are no items.</li>
+        }
+    </ul>
+</div>
