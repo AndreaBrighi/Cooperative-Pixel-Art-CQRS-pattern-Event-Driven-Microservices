@@ -1,7 +1,7 @@
 <main>
     <h1>{{id}}</h1>
-    <h1>pick a color:</h1>
-    <input [(colorPicker)]=color [style.background]=color/>
+    <label for="colorPicker">pick a color:</label>
+    <input [(colorPicker)]=color [style.background]=color id="colorPicker"/>
     <app-pixel-grid [id]=id [selectedColor]=color></app-pixel-grid >
 </main>
 
