@@ -1,27 +1,12 @@
-import {
-  Body,
-  Controller,
-  Get,
-  Inject,
-  Logger,
-  Param,
-  Post,
-} from '@nestjs/common';
+import { Body, Controller, Get, Logger, Param, Post } from '@nestjs/common';
 import { PixelGridsUseCases } from '../usecases/pixel-grids.usecases';
 //import { Admin, Kafka } from 'kafkajs';
 import { PixelDto } from './dto/PixelDto';
-import { ClientKafka } from '@nestjs/microservices';
 
 @Controller('pixel-grids')
 export class GatewayController {
   //private admin: Admin;
-  constructor(
-    private readonly pixelGridsUseCase: PixelGridsUseCases,
-    @Inject('GRID_SERVICE') private client: ClientKafka,
-  ) {}
-
-  async onModuleInit() {
-  }
+  constructor(private readonly pixelGridsUseCase: PixelGridsUseCases) {}
 
   @Get()
   getPixelGrids(): string[] {
