@@ -37,6 +37,7 @@ services:
     build: ./pixelgrid
     environment:
     - PORT=9002
+    - GRID=Grid1
     ports:
       - 9002:9002
     depends_on:

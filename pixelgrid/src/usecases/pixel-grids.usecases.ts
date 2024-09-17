@@ -1,28 +1,14 @@
 import { Injectable } from '@nestjs/common';
-import { pixelGrid } from 'src/core/pixel-grid';
+import { eventDTO } from 'src/controllers/dto/EventDto';
 import { PixelGridRepository as PixelGridRepository } from 'src/core/pixel-grids-repository';
 
 @Injectable()
 export class PixelGridUseCases {
-  private dictionary: Record<string, pixelGrid> = {};
+  private eventList: eventDTO[] = [];
 
-  constructor(private repository: PixelGridRepository) {
-    for (const grid in Object.keys(this.dictionary)) {
-      this.dictionary[grid].observer().subscribe((event) => {
-        repository.updateGrid(grid, event);
-      });
-    }
-  }
+  constructor(private repository: PixelGridRepository) {}
 
-  getAllGrid(): string[] {
-    return Object.keys(this.dictionary);
-  }
-
-  getPixelGrids(grid: string): pixelGrid {
-    return this.dictionary[grid];
-  }
-
-  updateGrid(grid: string) {
-    return this.dictionary[grid].colorPixel(0, 0, '');
+  ColorPixelInGrid(event: eventDTO) {
+    return this.eventList.push(event);
   }
 }

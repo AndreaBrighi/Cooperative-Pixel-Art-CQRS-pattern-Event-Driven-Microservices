@@ -6,5 +6,5 @@ import { ColorPixelEvent } from 'src/core/ColorPixelEvent';
 export class PixelGridsService implements PixelGridRepository {
   constructor() {}
 
-  updateGrid(grid: string, event: ColorPixelEvent) {}
+  colorGrid(grid: string, event: ColorPixelEvent){}
 }
