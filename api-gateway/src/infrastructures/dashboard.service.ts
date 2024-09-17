@@ -1,13 +1,15 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { ClientProxy } from '@nestjs/microservices';
+import { ClientKafka, ClientProxy } from '@nestjs/microservices';
 import { catchError } from 'rxjs';
 import { PixelGridsRepository } from '../core/pixel-grids-repository';
+import { PointDto } from '../controllers/dto/PointDto';
+import { ColorPixelCommand } from './dto/colorPixelCommand';
 
 @Injectable()
 export class PixelGridsService implements PixelGridsRepository {
   constructor(
     @Inject('DASHBOARD_SERVICE') private clientTCP: ClientProxy,
-    @Inject('GRID_SERVICE') private clientKafka: ClientProxy,
+    @Inject('GRID_SERVICE') private clientKafka: ClientKafka,
   ) {}
 
   getGridState(gridId: string): Promise<any> {
@@ -19,12 +21,18 @@ export class PixelGridsService implements PixelGridsRepository {
     });
   }
 
-  colorateGrid(gridId: string): Promise<any> {
+  colorateGrid(gridId: string, color: string, point: PointDto): Promise<any> {
     return new Promise((resolve, reject) => {
-      this.clientKafka
-        .emit<string, string>('colorate_grid', gridId)
-        .pipe(catchError(async (val) => reject(val)))
-        .subscribe((value) => resolve(value));
+      this.clientKafka.subscribeToResponseOf('colorate_grid.' + gridId);
+      this.clientKafka.connect().then(() => {
+        this.clientKafka
+          .send<string, ColorPixelCommand>(
+            'colorate_grid.' + gridId,
+            new ColorPixelCommand(color, point),
+          )
+          .pipe(catchError(async (val) => reject(val)))
+          .subscribe((value) => resolve(value));
+      });
     });
   }
 }
