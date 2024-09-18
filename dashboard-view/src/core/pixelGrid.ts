@@ -21,7 +21,7 @@ export class PixelGrid {
   public colorPixel(x: number, y: number, color: string): void {
     if (x >= 0 && x < this.width && y >= 0 && y < this.height) {
       this.subject.next(new ColorPixelEvent(new Point(x, y), color));
-      this._pixels[x][y] = color;
+      this._pixels[y][x] = color;
     }
   }
 
