@@ -1,5 +1,5 @@
 import { Module } from '@nestjs/common';
-import { InfrastructureServicesModule } from 'src/infrastructures/rabbitmq.module';
+import { InfrastructureServicesModule } from '../infrastructures/infrastucture.module';
 
 @Module({
   imports: [InfrastructureServicesModule],

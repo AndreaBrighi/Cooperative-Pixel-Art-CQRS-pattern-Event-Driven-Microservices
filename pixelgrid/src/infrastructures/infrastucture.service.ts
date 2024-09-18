@@ -1,0 +1,15 @@
+import { Inject, Injectable } from '@nestjs/common';
+import { PixelGridRepository } from '../core/pixel-grids-repository';
+import { ColorPixelEvent } from '../core/ColorPixelEvent';
+import { ClientKafka } from '@nestjs/microservices';
+import { eventDTO } from '../controllers/dto/EventDto';
+
+@Injectable()
+export class PixelGridsService implements PixelGridRepository {
+  constructor(@Inject('GRID_SERVICE') private clientKafka: ClientKafka) {}
+
+  colorGrid(grid: string, event: ColorPixelEvent){
+    this.clientKafka.emit<string, eventDTO>('color_pixel', new eventDTO(grid, event.color, event.pixel));
+  }
+}
+

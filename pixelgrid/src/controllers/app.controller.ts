@@ -10,6 +10,7 @@ export class PixelGridController {
   @MessagePattern('colorate_grid.' + process.env.GRID)
   colorarePixel(@Payload() event: eventDTO) {
     Logger.log(event, 'Colorate');
+    this.pixelGridService.ColorPixelInGrid(event);
     return event.color;
   }
 }
