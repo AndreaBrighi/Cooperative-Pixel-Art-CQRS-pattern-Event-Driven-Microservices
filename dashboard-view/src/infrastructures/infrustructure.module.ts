@@ -4,7 +4,7 @@ import { DashboardRepository } from '../core/dashboardRepository';
 import { ClientsModule, Transport } from '@nestjs/microservices';
 
 @Module({
-  imports: [  ClientsModule.register([
+  imports: [ClientsModule.register([
     {
       name: 'BROKER_SERVICE',
       transport: Transport.MQTT,

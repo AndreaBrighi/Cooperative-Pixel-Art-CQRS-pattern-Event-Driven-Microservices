@@ -10,9 +10,9 @@ async function bootstrap() {
     HOSTNAME: z.string().default('127.0.0.1'),
   });
   const envServerSchema = envSchema.parse(process.env);
-  const app = await NestFactory.createMicroservice<MicroserviceOptions>(
-    AppModule,
-    {
+  const app = await NestFactory.create(AppModule);
+  // microservice #1
+  const microserviceTcp = app.connectMicroservice<MicroserviceOptions>({
       transport: Transport.TCP,
       options: {
         host: envServerSchema.HOSTNAME,
@@ -20,7 +20,17 @@ async function bootstrap() {
       },
     },
   );
-  await app.listen().then(() => {
+  // microservice #2
+  const microserviceKafka = app.connectMicroservice<MicroserviceOptions>({
+    transport: Transport.KAFKA,
+    options: {
+      client: {
+        brokers: ['kafka:9092'],
+      },
+    },
+  });
+
+  await app.startAllMicroservices().then(() => {
     Logger.log(
       'Server listening: ' +
         envServerSchema.HOSTNAME! +
