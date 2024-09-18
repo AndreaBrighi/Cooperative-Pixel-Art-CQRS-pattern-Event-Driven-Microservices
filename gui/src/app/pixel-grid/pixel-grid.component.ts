@@ -1,6 +1,9 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { PixelGridService } from '../pixel-grid.service';
+import { PixelGridWebsocketService } from '../pixel-grid-websocket.service';
+import { MQTTDto } from '../dto/mqttDto';
+import { PixelDto } from '../dto/PixelDto';
 
 @Component({
   selector: 'app-pixel-grid',
@@ -9,7 +12,7 @@ import { PixelGridService } from '../pixel-grid.service';
   imports: [CommonModule],
   standalone: true,
 })
-export class PixelGridComponent implements OnInit {
+export class PixelGridComponent implements OnInit, OnDestroy {
 
   private BLACK: string = '#000000'
   private WHITE: string = '#FFFFFF'
@@ -20,11 +23,20 @@ export class PixelGridComponent implements OnInit {
 
   grid!: string[][];
 
-  constructor(private httpService: PixelGridService ) {
+  constructor(private httpService: PixelGridService, private wsService: PixelGridWebsocketService) {
+  }
+
+  ngOnDestroy(): void {
+    this.wsService.unsubscribe(this.id!);
   }
 
   ngOnInit(): void {
     console.log(this.id)
+    this.wsService.subscribeNewTopic<MQTTDto<PixelDto>>(this.id!, (message)=> {
+        let data = message.data;
+        this.changePixelColor(data.point.y, data.point.x, data.color);
+      }
+    );
     this.httpService.getGridStatus(this.id!).subscribe(result => {
       this.grid = result.grid;
       console.log(result);
@@ -42,8 +54,6 @@ export class PixelGridComponent implements OnInit {
 
   togglePixel(rowIndex: number, colIndex: number) {
     let color = this.selectedColor.toUpperCase()
-    console.log(color)
-    console.log(rowIndex);
     let newColor = this.grid[rowIndex][colIndex] !== color  ? color : this.WHITE;
     this.grid[rowIndex][colIndex] = newColor;
     this.httpService.setPixelColor(this.id!, { x: colIndex, y: rowIndex }, newColor).subscribe(result=>{
