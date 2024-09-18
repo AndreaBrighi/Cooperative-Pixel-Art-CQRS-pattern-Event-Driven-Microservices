@@ -1,11 +1,11 @@
 import { Point } from '../core/Point';
 
 export class ColorPixelEvent {
-  pixel: Point;
+  point: Point;
   color: string;
 
-  constructor(pixel: Point, color: string) {
-    this.pixel = pixel;
+  constructor(point: Point, color: string) {
+    this.point = point;
     this.color = color;
   }
 }

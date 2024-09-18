@@ -1,6 +1,7 @@
 import { Injectable, Logger } from '@nestjs/common';
-import { PixelGrid } from 'src/core/pixelGrid';
-import { DashboardRepository } from 'src/core/dashboardRepository';
+import { PixelGrid } from '../core/pixelGrid';
+import { DashboardRepository } from '../core/dashboardRepository';
+import { Point } from '../core/Point';
 
 @Injectable()
 export class DashboardUseCases {
@@ -11,13 +12,11 @@ export class DashboardUseCases {
   constructor(private repository: DashboardRepository) {
 
     this.dictionary["Grid1"] = new PixelGrid(10, 10, this.whiteGrid);
-    Logger.log(this.dictionary)
-    Logger.log(Object.keys(this.dictionary))
     for (const grid of Object.keys(this.dictionary)) {
       Logger.log(grid);
-      this.dictionary[grid].observer.subscribe(event =>
-        repository.updateGrid(grid, event)
-      );
+      this.dictionary[grid].observer.subscribe(event =>{
+        this.repository.updateGrid(grid, event);
+      });
     }
   }
 
@@ -29,7 +28,7 @@ export class DashboardUseCases {
     return this.dictionary[grid];
   }
 
-  updateGrid(grid: string) {
-    return this.dictionary[grid].colorPixel(0, 0, '');
+  colorPixel(grid: string, point: Point, color: string): void {
+    this.dictionary[grid].colorPixel(point.x, point.y , color);
   }
 }

@@ -9,7 +9,10 @@ import { ClientsModule, Transport } from '@nestjs/microservices';
       name: 'BROKER_SERVICE',
       transport: Transport.MQTT,
       options: {
-        url: 'ws://localhost:15675/ws',
+        url: 'ws://rabbitmq:15675/ws',
+        subscribeOptions: {
+          qos: 2
+        },
       }
     },
   ])],

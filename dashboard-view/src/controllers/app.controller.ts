@@ -1,8 +1,8 @@
 import { Controller, Logger } from '@nestjs/common';
 import { EventPattern, MessagePattern, Payload, Transport } from '@nestjs/microservices';
-import { PixelGrid } from 'src/core/pixelGrid';
 import { DashboardUseCases } from '../usecases/dashboard.usecases';
 import {PixelGridDto, convertToDto} from './dto/PixelGridDto'
+import { eventDTO } from './dto/EventDto';
 
 @Controller()
 export class DashboardViewController {
@@ -15,7 +15,9 @@ export class DashboardViewController {
   }
 
   @EventPattern('color_pixel', Transport.KAFKA)
-  colorPixel(@Payload() data: { gridId: string; x: number; y: number; color: string }) {
+  colorPixel(@Payload() data: eventDTO) {
     Logger.log(data, 'Dashboard');
+    console.dir(data);
+    this.dashboardService.colorPixel(data.grid, data.pixel, data.color);
   }
 }
