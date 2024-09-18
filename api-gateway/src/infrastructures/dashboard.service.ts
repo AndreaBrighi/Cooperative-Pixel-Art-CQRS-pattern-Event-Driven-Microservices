@@ -23,12 +23,12 @@ export class PixelGridsService implements PixelGridsRepository {
 
   colorateGrid(gridId: string, color: string, point: PointDto): Promise<any> {
     return new Promise((resolve, reject) => {
-      this.clientKafka.subscribeToResponseOf('colorate_grid.' + gridId);
+      this.clientKafka.subscribeToResponseOf('colorate_grid.'+ gridId);
       this.clientKafka.connect().then(() => {
         this.clientKafka
-          .send<string, ColorPixelCommand>(
+          .send<string, string>(
             'colorate_grid.' + gridId,
-            new ColorPixelCommand(color, point),
+            JSON.stringify(new ColorPixelCommand(color, point)),
           )
           .pipe(catchError(async (val) => reject(val)))
           .subscribe((value) => resolve(value));

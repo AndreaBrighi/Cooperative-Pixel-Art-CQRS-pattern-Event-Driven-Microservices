@@ -9,7 +9,7 @@ export class PixelGridsService implements PixelGridRepository {
   constructor(@Inject('GRID_SERVICE') private clientKafka: ClientKafka) {}
 
   colorGrid(grid: string, event: ColorPixelEvent){
-    this.clientKafka.emit<string, eventDTO>('color_pixel', new eventDTO(grid, event.color, event.pixel));
+    this.clientKafka.emit<string, string>('color_pixel', JSON.stringify(new eventDTO(grid, event.color, event.pixel)));
   }
 }
 
