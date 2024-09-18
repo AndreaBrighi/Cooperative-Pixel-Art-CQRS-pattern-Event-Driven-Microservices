@@ -5,18 +5,12 @@ import { z } from 'zod';
 import { MicroserviceOptions, Transport } from '@nestjs/microservices';
 
 async function bootstrap() {
-  const envSchema = z.object({
-    PORT: z.coerce.number().default(9002),
-    HOSTNAME: z.string().default('127.0.0.1'),
-  });
-  const envServerSchema = envSchema.parse(process.env);
   const app = await NestFactory.createMicroservice<MicroserviceOptions>(
     AppModule,
     {
       transport: Transport.KAFKA,
       options: {
         client: {
-          clientId: 'grid1',
           brokers: ['kafka:9092'],
         },
         consumer: {
@@ -27,11 +21,7 @@ async function bootstrap() {
   );
   await app.listen().then(() => {
     Logger.log(
-      'Server listening: ' +
-        envServerSchema.HOSTNAME! +
-        ':' +
-        envServerSchema.PORT!,
-      'Server',
+      'Server listening to Kafka'
     );
   });
 }
