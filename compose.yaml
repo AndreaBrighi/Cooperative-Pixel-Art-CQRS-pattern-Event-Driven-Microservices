@@ -33,13 +33,20 @@ services:
       kafka:
         condition: service_healthy
 
-  pixelgrid:
+  pixelgrid1:
     build: ./pixelgrid
     environment:
-    - PORT=9002
     - GRID=Grid1
-    ports:
-      - 9002:9002
+    depends_on:
+      gateway:
+          condition: service_started
+      kafka:
+        condition: service_healthy
+
+  pixelgrid2:
+    build: ./pixelgrid
+    environment:
+    - GRID=Grid2
     depends_on:
       gateway:
           condition: service_started
