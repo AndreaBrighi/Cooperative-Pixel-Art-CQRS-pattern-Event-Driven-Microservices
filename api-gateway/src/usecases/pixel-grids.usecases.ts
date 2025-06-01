@@ -4,12 +4,12 @@ import { PixelGridsRepository } from 'src/core/pixel-grids-repository';
 
 @Injectable()
 export class PixelGridsUseCases {
-  private allGrid = ['Grid1'];
+  //private allGrid = [];
 
   constructor(private repository: PixelGridsRepository) {}
 
-  getAllGrid(): string[] {
-    return this.allGrid;
+  getAllGrids(): Promise<any> {
+    return this.repository.getAllGrids();
   }
 
   getGridState(gridId: string): Promise<any> {

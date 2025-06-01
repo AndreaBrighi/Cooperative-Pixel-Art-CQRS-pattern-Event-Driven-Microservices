@@ -9,9 +9,9 @@ export class GatewayController {
   constructor(private readonly pixelGridsUseCase: PixelGridsUseCases) {}
 
   @Get()
-  getPixelGrids(): string[] {
+  async getPixelGrids() {
     Logger.log('GET');
-    return this.pixelGridsUseCase.getAllGrid();
+    return this.pixelGridsUseCase.getAllGrids();
   }
 
   @Get(':gridId')
