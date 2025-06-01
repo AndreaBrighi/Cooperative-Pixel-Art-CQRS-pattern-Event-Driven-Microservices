@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { Logger, Module } from '@nestjs/common';
 import { PixelGridsService } from './infrastucture.service';
 import { PixelGridRepository } from '../core/pixel-grids-repository';
 import { ClientsModule, Transport } from '@nestjs/microservices';
@@ -11,11 +11,11 @@ import { ClientsModule, Transport } from '@nestjs/microservices';
         transport: Transport.KAFKA,
         options: {
           client: {
-            clientId: 'grid1',
+            clientId: process.env.GRID,
             brokers: ['kafka:9092'],
           },
           consumer: {
-            groupId: 'kafka-microservices',
+            groupId: 'kafka-microservices-grid',
           },
         },
       },
@@ -29,4 +29,8 @@ import { ClientsModule, Transport } from '@nestjs/microservices';
   ],
   exports: [PixelGridRepository],
 })
-export class InfrastructureServicesModule {}
+export class InfrastructureServicesModule {
+  constructor(){
+    Logger.log('PixelGrid InfrastructureServicesModule initialized for grid: ' + process.env.GRID, 'PixelGridModule');
+  }
+}
