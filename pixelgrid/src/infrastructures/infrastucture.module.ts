@@ -18,7 +18,7 @@ import { Snapshot, SnapshotSchema } from 'src/db/schemas/snapshot.schema';
             brokers: ['kafka:9092'],
           },
           consumer: {
-            groupId: 'kafka-microservices-grid',
+            groupId: 'pixelgrid-consumer-' + process.env.GRID,
           },
         },
       },

@@ -1,4 +1,4 @@
-import { Inject, Injectable } from '@nestjs/common';
+import { Inject, Injectable, Logger } from '@nestjs/common';
 import { PixelGridRepository } from '../core/pixel-grids-repository';
 import { ColorPixelEvent } from '../core/ColorPixelEvent';
 import { ClientKafka } from '@nestjs/microservices';
@@ -30,46 +30,60 @@ export class PixelGridsService implements PixelGridRepository {
       point: { x: event.pixel.x, y: event.pixel.y },
       time: eventTime,
     });
+    Logger.log(
+      `Event saved: ${newEvent.color} at (${newEvent.point}) on grid ${newEvent.gridName} at ${newEvent.time}`,
+    );
     newEvent.save().catch((err) => {
-      console.error('Error saving event to database:', err);
-    });
-    const lastSnapshot = this.snapshotModel
-      .findOne({ gridName: grid })
-      .sort({ time: -1 })
-      .exec();
-    lastSnapshot.then((snapshot) => {
-      if (snapshot) {
-        const eventSinceLastSnapshot = this.eventModel.find({
-          gridName: grid,
-          time: { $gte: snapshot.time },
-        });
-        eventSinceLastSnapshot.then((events) => {
-          if (events.length > 10) {
-            const updatedGrid = snapshot.grid.map((row) => [...row]);
-            updatedGrid[event.pixel.y][event.pixel.x] = event.color;
-            const newSnapshot = new this.snapshotModel({
-              gridName: grid,
-              grid: updatedGrid,
-              time: eventTime,
-            });
-            newSnapshot.save().catch((err) => {
-              console.error('Error saving snapshot to database:', err);
-            });
-          }
-        });
-      } else {
-        const initialGrid = Array.from({ length: 10 }, () =>
-          Array(10).fill('#FFFFFF'),
-        ); // Example initial grid
-        const newSnapshot = new this.snapshotModel({
-          gridName: grid,
-          grid: initialGrid,
-          time: new Date(),
-        });
-        newSnapshot.save().catch((err) => {
-          console.error('Error saving initial snapshot to database:', err);
-        });
-      }
+      Logger.error('Error saving event to database:', err);
+    }).then(() => {
+      const lastSnapshot = this.snapshotModel
+        .findOne({ gridName: grid })
+        .sort({ time: -1 })
+        .exec();
+      lastSnapshot.then((snapshot) => {
+      Logger.log(`Last snapshot for grid ${grid}: ${snapshot ? snapshot.time : 'None'}`);
+        if (snapshot) {
+          const eventSinceLastSnapshot = this.eventModel.find({
+            gridName: grid,
+            time: { $gte: snapshot.time },
+          }).sort({ time: 1 }).exec();
+          eventSinceLastSnapshot.then((events) => {
+            Logger.log(`Events since last snapshot for grid ${grid}: ${events.length}`);
+            if (events.length >= 10) {
+              const newSnapshot = new this.snapshotModel({
+                gridName: grid,
+                grid: snapshot.grid,
+                time: new Date(),
+              });
+              for (const event of events) {
+                const x = Number(Object.values(event.point)[0]);
+                const y = Number(Object.values(event.point)[1]);
+                newSnapshot.grid[y][x] = event.color;
+              }
+              Logger.log(
+                `New snapshot created for grid ${grid} at ${newSnapshot.time}`,
+              );
+              newSnapshot.save().catch((err) => {
+                Logger.error('Error saving snapshot to database:', err);
+              });
+            }
+          });
+        } else {
+          const initialGrid = Array.from({ length: 10 }, () =>
+            Array(10).fill('#FFFFFF'),
+          ); // Example initial grid
+          Logger.log(`No previous snapshot found for grid ${grid}. Creating initial snapshot.`);
+          initialGrid[Number(event.pixel.y)][Number(event.pixel.x)] = event.color;
+          const newSnapshot = new this.snapshotModel({
+            gridName: grid,
+            grid: initialGrid,
+            time: new Date(),
+          });
+          newSnapshot.save().catch((err) => {
+            Logger.error('Error saving initial snapshot to database:', err);
+          });
+        }
+      });
     });
   }
 }

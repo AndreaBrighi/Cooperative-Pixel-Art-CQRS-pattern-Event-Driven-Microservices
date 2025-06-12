@@ -8,7 +8,11 @@ import { MongooseModule } from '@nestjs/mongoose';
   imports: [
     PixelGridUseCasesModule,
     PixelGridServicesModule,
-    MongooseModule.forRoot('mongodb://mongodb/pixelgrid'),
+    MongooseModule.forRoot('mongodb://mongodb/',{
+      user: "root",
+      pass: "example",
+      dbName: "pixelgrid",
+    }),
   ],
   controllers: [PixelGridController],
   providers: [],
