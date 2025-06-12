@@ -20,9 +20,7 @@ async function bootstrap() {
     },
   );
   await app.listen().then(() => {
-    Logger.log(
-      'Server listening to Kafka'
-    );
+    Logger.log('Server listening to Kafka');
   });
 }
 bootstrap();

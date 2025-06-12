@@ -10,7 +10,10 @@ export class PixelGridUseCases {
   constructor(private repository: PixelGridRepository) {}
 
   ColorPixelInGrid(event: eventDTO) {
-    this.repository.colorGrid(event.grid, new ColorPixelEvent(event.pixel, event.color));
+    this.repository.colorGrid(
+      event.grid,
+      new ColorPixelEvent(event.pixel, event.color),
+    );
     return this.eventList.push(event);
   }
 }
